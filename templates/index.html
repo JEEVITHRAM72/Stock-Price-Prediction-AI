@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Prediction with XAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style> 
+        body{
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <div class="container-fluid main-container">
+        <header class="text-center py-4 header-styling">
+            <h1 aria-label="Stock Price Prediction">Stock Price Prediction AI</h1>
+            <p class="lead">with Explainable AI Integration</p>
+        </header>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="glass-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Enter Stock Details</h5>
+                        <div class="mb-3">
+                            <label for="marketSelect" class="form-label">Market</label>
+                            <select class="form-select custom-input" id="marketSelect">
+                                <option value="us">US Market</option>
+                                <option value="nse">NSE (India)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="stockSymbol" class="form-label">Stock Symbol</label>
+                            <input type="text" class="form-control custom-input" id="stockSymbol" placeholder="e.g., AAPL or RELIANCE" style="color: white;">
+                        </div>
+                        <div id="loadingSpinner" class="spinner-border text-primary" role="status" style="display: none;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <button id="predictBtn" class="btn btn-gradient" aria-label="Predict Stock Price">Predict Price</button>
+                    </div>
+                </div>    
+            </div>
+
+            <div class="col-md-8">
+                <div id="predictionResults" class="glass-card">
+                    <div class="card-body">
+                        <h5 class="card-title" aria-label="Prediction Results">Prediction Results</h5>
+                        <div id="results">
+                            <div id="symbol" class="mb-3 result-item"></div>
+                            <div id="currentPrice" class="mb-3 result-item"></div>
+                            <div id="predictedPrice" class="mb-3 result-item"></div>
+                            <div id="explanation" class="mb-4 explanation-box"></div>
+                            <div id="buyPrice" class="mb-3 result-item"></div>
+                            <div id="sellPrice" class="mb-3 result-item"></div>
+                            <div id="buySellExplanation" class="mb-4 explanation-box"></div>
+                        </div>
+                        <div class="mt-4 chart-container">
+                            <h6>Feature Importance</h6>
+                            <canvas id="featureImportanceChart" class="mb-4"></canvas>
+                        </div>
+                        <div class="mt-4 chart-container">
+                            <h6>TradingView Chart</h6>
+                            <div id="tradingview-chart" style="height: 400px;"></div>
+                            <canvas id="priceChart" class="mb-4"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="glass-card market-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top Gainers</h5>
+                        <div id="topGainers" class="market-data-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card market-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top Losers</h5>
+                        <div id="topLosers" class="market-data-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card market-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Most Active</h5>
+                        <div id="mostActive" class="market-data-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card market-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Trending Tickers</h5>
+                        <div id="trendingTickers" class="market-data-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <h5>StockPredictAI</h5>
+            <p class="mb-3">Accurate stock prediction with ML & Explainable AI for smarter investing.</p>
+            <p class="mb-0">© 2025 StockPredictAI | <a href="#" class="text-white">Privacy</a> | <a href="#" class="text-white">Terms</a></p>
+        </div>
+    </footer>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="notificationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
